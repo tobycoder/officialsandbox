@@ -1,0 +1,35 @@
+#
+#Adjust: 
+#PTV options
+#Name Candidate
+#
+#
+export_totaal = read.csv2("export2.csv")
+export_totaal = export_totaal[export_totaal$country == "United States",]
+#Filter the N with no opinion
+
+clinton.28 = export_totaal[export_totaal$ptv_option_4_question_6 < 11 &
+                                export_totaal$ptv_option_4_question_6 > 7,]
+
+#Strt reading correct values
+clinton.28 = table(clinton.28$statement_28)
+clinton.28 = data.frame(clinton.28)
+clinton.28
+
+
+if (clinton.28[1, 1] == -1) {
+  clinton.28 = clinton.28[-1,]
+}
+clinton.28$Var1 =  c('Strongly Disagree', 'Disagree', 'No Opninion', 'Agree', 'Strongly Agree')
+clinton.28$Var1 <- factor(clinton.28$Var1 , levels=unique(as.character(clinton.28$Var1)))
+
+per = round(c(clinton.28$Freq) / sum(clinton.28$Freq) * 100, 2)
+
+if (sum(per) > 99 & sum(per) < 101) {
+  
+  clinton.28 = cbind(clinton.28, per)
+  clinton.28
+}
+clinton.28
+
+
